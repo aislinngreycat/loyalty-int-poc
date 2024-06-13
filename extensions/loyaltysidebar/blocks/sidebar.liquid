@@ -1,0 +1,118 @@
+<button is="Loyaltybutton" onclick="showPopup()"> ❀ Rewards </button>
+<div id="customer-status-popup" class="popup">
+  <div class="popup-content">
+    <span class="close-btn" onclick="closePopup()">&times;</span>
+    {% if customer %}
+      <p>Welcome, {{ customer.first_name }}!</p>
+      <p>Your email address: 
+      <span id="customeremail" data-email="{{ customer.email }}">{{ customer.email }}</span></p>
+      <p> <span> Calculated data. </span> </p>
+      <p> <span id ="LoggedIn"> You are logged in. </span> </p>
+      <button onclick = "getPoints()"> Get Points</button>
+    {% else %}
+      <p>Hello, Guest!</p>
+      <p>You are not logged in.</p>
+    {% endif %}
+  </div>
+</div>
+q
+<style>
+  /* Popup container - can be anything you want */
+  .popup {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+
+  /* Popup content */
+  .popup-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+
+  /* Close button */
+  .close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close-btn:hover,
+  .close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+ button[is="Loyaltybutton"] {
+    position: fixed;
+    bottom: 15px;
+    right: 15px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+    outline: inherit;
+    z-index: 100;
+  }
+
+</style>
+
+<script>
+  // Function to show the popup
+  function showPopup() {
+    document.getElementById("customer-status-popup").style.display = "block";
+  }
+
+ // Function to close the pop-up
+  function closePopup() {
+    document.getElementById("customer-status-popup").style.display = "none";
+  }
+
+// Function to get total points from Loyalty
+
+function getPoints(){
+
+    console.log("Button Clicked" + customeremail.dataset.email)
+    const ifLoggedIn =  document.getElementById('LoggedIn');
+    const email =  customeremail.dataset.email
+    var points
+    const url =  "https://x8ki-letl-twmt.n7.xano.io/api:aEGKqB_u/users/email_id?email=" + email
+    if (ifLoggedIn){
+        fetch(url, {
+          method: 'GET',
+          headers: {'Content-Type': 'application/json'}
+        })
+       .then(res => res.json())
+        .then(data => {
+           console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    }
+
+</script>
+
+{% schema %}
+{
+  "name": "Side Bar",
+  "target": "body",
+  "settings": [
+  ]
+}
+{% endschema %}
